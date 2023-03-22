@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Amasty_UserName::css/style.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <container name="Amasty_USERNAME">
+                <block name="Amasty_USERNAME.hello"
+                        class="Amasty\UserName\Block\Index"
+                        template="Amasty_UserName::index.phtml"/>
+                <block name="Amasty_USERNAME.form"
+                        template="Amasty_UserName::form.phtml"
+                        class="Amasty\UserName\Block\Form">
+                        <arguments>
+                            <argument name="css_classes" xsi:type="string">class1 class2 class3</argument>
+                        </arguments>
+                        <block name="Amasty_USERNAME.timer"
+                               template="Amasty_UserName::timer.phtml"/>
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>
