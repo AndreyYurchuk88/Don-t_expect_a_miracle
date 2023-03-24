@@ -1,20 +1,22 @@
 <?php
 /**
- * @var \Amasty\UserName\Block\Index $block
+ * @var \Amasty\UserName\Block\Form $block
  */
 ?>
 
-<form class="<?= $this->getCssClasses() ?>" method="post">
+<form class="<?= $block->getCssClasses() ?>" method="post">
     <div>
         <label for="sku">sku:</label>
         <input type="text" name="sku" />
     </div>
-    <div>
-        <label for="qty">qty:</label>
-        <input type="number" name="qty" />
-    </div>
+    <?php if (!$block->isQtyHidden()): ?>
+        <div>
+            <label for="qty">qty:</label>
+            <input type="number" name="qty" value="<?= $block->getDefaultQtyValue() ?>" />
+        </div>
+    <?php endif; ?>
     <?= $block->getChildHtml('Amasty_USERNAME.timer') ?>
     <div>
-        <button type="button">button</button>
+        <button type="submit">button</button>
     </div>
 </form>

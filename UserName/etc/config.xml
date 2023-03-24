@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <user_config>
+            <general>
+                <enabled>1</enabled>
+                <welcome_text>We are glad to welcome you! Here you can use the settings for your store.</welcome_text>
+                <hide_qty>0</hide_qty>
+                <default_qty>0</default_qty>
+            </general>
+        </user_config>
+    </default>
+</config>
