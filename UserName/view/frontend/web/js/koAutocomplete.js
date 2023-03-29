@@ -3,12 +3,12 @@ define(['uiComponent', 'Magento_Catalog/js/product/list/toolbar'], function (Com
         defaults: {
             searchText: '',
             autocompleteResults: [],
-            productName: [],
+            productName: '',
             minChars: 3
         },
         initObservable: function () {
             this._super();
-            this.observe(['searchText', 'autocompleteResults']);
+            this.observe(['searchText', 'autocompleteResults', 'productName']);
             return this;
         },
         initialize: function () {
@@ -26,24 +26,16 @@ define(['uiComponent', 'Magento_Catalog/js/product/list/toolbar'], function (Com
             }
 
             $.ajax({
-                url: 'username/index/index',
+                url: 'username/index/addtocart',
                 type: 'POST',
-                data: formData,
+                data: { sku: this.searchText },
                 dataType: 'json',
                 cache: false,
                 contentType: false,
                 processData: false,
                 success: function(data) {
-                    var results = [];
-                    if (data.items && data.items.length) {
-                        data.items.forEach(function(item) {
-                            results.push({
-                                sku: item.sku,
-                                name: item.name
-                            });
-                        });
-                    }
-                    self.autocompleteResults(results);
+                    self.autocompleteResults(data.results);
+                    self.productName(data.productName);
                 },
                 error: function(error) {
                     console.error('Error:', error);

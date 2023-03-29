@@ -3,8 +3,8 @@
     <input type="text" data-bind="textInput: searchText" name="sku" id="sku"/>
     <div>
         <ul data-bind="foreach: autocompleteResults">
-            <li> <!--data-bind="text: sku"-->
-                 <!--<div data-bind="text: productName"></div>-->
+            <li data-bind="text: sku">
+                 <div data-bind="text: productName"></div>
             </li>
         </ul>
     </div>
