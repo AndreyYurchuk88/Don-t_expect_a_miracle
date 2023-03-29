@@ -2,13 +2,18 @@ define(['uiComponent', 'Magento_Catalog/js/product/list/toolbar'], function (Com
     return Component.extend({
         defaults: {
             searchText: '',
-            autocompleteResults: ko.observableArray([]),
-            productName: ko.observable(''),
+            autocompleteResults: [],
+            productName: [],
             minChars: 3
+        },
+        initObservable: function () {
+            this._super();
+            this.observe(['searchText', 'autocompleteResults']);
+            return this;
         },
         initialize: function () {
             this._super();
-            this.autocompleteResults([]);
+            this.searchText.subscribe(this.handleAutocomplete.bind(this));
         },
         handleAutocomplete: function (searchText) {
             var self = this;
@@ -31,17 +36,12 @@ define(['uiComponent', 'Magento_Catalog/js/product/list/toolbar'], function (Com
                 'filters': [filters]
             }];
 
-            fetch('username/index/index', {
-                method: 'POST',
-                body: JSON.stringify(request),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
+            $.ajax({
+                url: 'username/index/index',
+                type: 'POST',
+                data: JSON.stringify(request),
+                contentType: 'application/json',
+                success: function(data) {
                     var results = [];
                     if (data.items && data.items.length) {
                         data.items.forEach(function(item) {
@@ -52,10 +52,11 @@ define(['uiComponent', 'Magento_Catalog/js/product/list/toolbar'], function (Com
                         });
                     }
                     self.autocompleteResults(results);
-                })
-                .catch(function(error) {
+                },
+                error: function(error) {
                     console.error('Error:', error);
-                });
+                }
+            });
         }
     });
 });
