@@ -25,22 +25,14 @@ define(['uiComponent', 'Magento_Catalog/js/product/list/toolbar'], function (Com
                 return;
             }
 
-            var filters = {
-                'sku': {
-                    'like': '%' + searchText + '%'
-                }
-            };
-
-            var request = toolbar().getRequest();
-            request['filter_groups'] = [{
-                'filters': [filters]
-            }];
-
             $.ajax({
                 url: 'username/index/index',
                 type: 'POST',
-                data: JSON.stringify(request),
-                contentType: 'application/json',
+                data: formData,
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
                 success: function(data) {
                     var results = [];
                     if (data.items && data.items.length) {
