@@ -6,14 +6,14 @@ use Magento\Framework\View\Element\Template;
 
 class Form extends Template
 {
-    public function getCssClasses()
+    public function getCssClasses(): string
     {
         return $this->getData('css_classes') ? (string) $this->getData('css_classes') : '';
     }
 
-    public function isQtyHidden()
+    public function isQtyHidden(): bool
     {
-        return (bool) $this->_scopeConfig->getValue('user_config/general/hide_qty');
+        return $this->_scopeConfig->isSetFlag('user_config/general/hide_qty');
     }
 
     public function getDefaultQtyValue()

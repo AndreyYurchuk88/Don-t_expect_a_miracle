@@ -10,8 +10,7 @@ use Magento\Framework\Message\ManagerInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\RequestInterface;
-use Magento\Catalog\Model\Product;
-use Magento\CatalogInventory\Model\Stock\Item;
+use \Magento\Catalog\Model\Product\Type;
 
 class AddToCart implements ActionInterface
 {
@@ -45,15 +44,6 @@ class AddToCart implements ActionInterface
      */
     protected $checkoutSession;
 
-    /**
-     * @var Product
-     */
-    protected $product;
-
-    /**
-     * @var Item
-     */
-    protected $stockItem;
 
     public function __construct(
         Context $context,
@@ -62,8 +52,6 @@ class AddToCart implements ActionInterface
         ProductRepositoryInterface $productRepository,
         ManagerInterface $messageManager,
         CheckoutSession $checkoutSession,
-        Product $product,
-        Item $stockItem
     )
     {
         $this->context = $context;
@@ -72,8 +60,6 @@ class AddToCart implements ActionInterface
         $this->productRepository = $productRepository;
         $this->messageManager = $messageManager;
         $this->checkoutSession = $checkoutSession;
-        $this->product = $product;
-        $this->stockItem = $stockItem;
     }
 
     public function execute()
@@ -92,12 +78,12 @@ class AddToCart implements ActionInterface
             $product = $this->productRepository->get($sku);
 
             //Проверка на наличие такого товара
-            if (!$product) {
+            if (!$product->getId()) {
                 throw new LocalizedException(('Product not found.'));
             }
 
             // Проверка на simple товар
-            if ($product->getTypeId() !== 'simple') {
+            if ($product->getTypeId() !== Type::TYPE_SIMPLE)  {
                 throw new LocalizedException(('This product is not available.'));
             }
 
@@ -114,23 +100,27 @@ class AddToCart implements ActionInterface
                 throw new LocalizedException(('Not enough quantity available.'));
             }
 
+            // Получаем квоту
+            $quote = $this->checkoutSession->getQuote();
+
+            // Проверяем наличие id и сохраняем его, если его нет
+            if (!$quote->getId()) {
+                $quote->save();
+            }
+
+            // Добавляем продукт и сохраняем квоту
             $params = [
                 'product' => $product->getId(),
                 'qty' => $qty,
             ];
-
-            //добавляем в корзину
-            $this->checkoutSession->getQuote()->addProduct($product, $params);
-            $this->checkoutSession->getQuote()->save();
+            $quote->addProduct($product, $params);
+            $quote->save();
 
             $this->messageManager->addSuccess(('Product was successfully added to your shopping cart.'));
-            return $this->resultRedirectFactory->create()->setPath('*/*/');
         } catch (LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
-            return $this->resultRedirectFactory->create()->setPath('*/*/');
         } catch (\Exception $e) {
             $this->messageManager->addException($e, ('Something went wrong while adding the product to cart.'));
-            return $this->resultRedirectFactory->create()->setPath('*/*/');
         }
     }
 }

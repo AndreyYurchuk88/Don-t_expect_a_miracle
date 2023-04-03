@@ -6,15 +6,15 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 abstract class ConfigProviderAbstract
 {
+    /**
+     * @var ScopeConfigInterface
+     */
     protected $scopeConfig;
 
-    protected $pathPrefix;
 
-    public function __construct(ScopeConfigInterface $scopeConfig,
-                                                     $pathPrefix = '')
+    public function __construct(ScopeConfigInterface $scopeConfig)
     {
         $this->scopeConfig = $scopeConfig;
-        $this->pathPrefix = $pathPrefix;
     }
 
     //метод getValue() достаёт значения из scopeConfig только для pathPrefix
