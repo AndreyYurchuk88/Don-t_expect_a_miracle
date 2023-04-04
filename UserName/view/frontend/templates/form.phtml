@@ -5,9 +5,8 @@
 ?>
 
 <form class="<?= $block->getCssClasses() ?>" action="username/index/addtocart" method="post">
-    <div>
-        <label for="sku">sku:</label>
-        <input type="text" name="sku" />
+    <div data-bind="scope: 'skuAutocomplete'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
     </div>
     <?php if (!$block->isQtyHidden()): ?>
         <div>
@@ -20,3 +19,18 @@
         <button type="submit">button</button>
     </div>
 </form>
+
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "Magento_Ui/js/core/app": {
+               "components": {
+                   "skuAutocomplete": {
+                       "component": "Amasty_UserName/js/koAutocomplete",
+                       "template" : "Amasty_UserName/koAutocomplete"
+                   }
+               }
+           }
+       }
+   }
+</script>
