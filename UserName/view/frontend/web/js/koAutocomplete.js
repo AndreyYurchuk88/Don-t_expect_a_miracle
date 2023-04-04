@@ -5,16 +5,17 @@ define(['uiComponent', 'jquery'], function (Component, $) {
             searchResult: [],
             minChars: 3
         },
+        //устанавливаем наблюдение за searchText и searchResult
         initObservable: function () {
             this._super();
             this.observe(['searchText', 'searchResult']);
             return this;
         },
+        //при изменении значения searchText - вызывается handleAutocomplete
         initialize: function () {
             this._super();
             this.searchText.subscribe(this.handleAutocomplete.bind(this));
         },
-
         handleAutocomplete: function (searchValue) {
             if (searchValue.length >= this.minChars) {
                 var self = this;
