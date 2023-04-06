@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="amasty" translate="label" sortOrder="10">
+            <label>Amasty Second User Name</label>
+        </tab>
+        <section id="amasty_secondusername" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Second Username Settings</label>
+            <tab>amasty</tab>
+            <resource>Amasty_SecondUsername::config_secondusername</resource>
+            <group id="promo_sku" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Promo SKU</label>
+                <field id="promo_sku" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Promo SKU</label>
+                    <comment>Enter only 1 SKU</comment>
+                    <validate>validate-length maximum-length-1</validate>
+                </field>
+            </group>
+            <group id="for_sku" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>For SKU</label>
+                <field id="for_sku" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>For SKU</label>
+                    <comment>You can enter multiple articles separated by commas</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

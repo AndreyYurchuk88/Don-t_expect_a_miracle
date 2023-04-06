@@ -35,7 +35,7 @@ class SearchSku extends \Magento\Framework\App\Action\Action
         $collection = $this->collectionFactory->create()
             ->addAttributeToSelect('sku')
             ->addAttributeToSelect('name')
-            ->addAttributeToFilter('sku', ['like' => "{$searchText}%"]) //фильтр по search_text
+            ->addAttributeToFilter('sku', ['like' => sprintf('%s%%', $searchText)]) //фильтр по search_text
             ->setPageSize(10); //кол-во выводимых элементов на странице
 
         $results = []; //массив для хранения результатов поиска
