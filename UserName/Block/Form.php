@@ -7,6 +7,7 @@ use Magento\Framework\Event\ManagerInterface as EventManager;
 
 class Form extends Template
 {
+
     const FORM_ACTION = 'username/index/addtocart';
 
     /**
@@ -36,7 +37,7 @@ class Form extends Template
 
     public function isQtyHidden(): bool
     {
-        return (bool) $this->_scopeConfig->getValue('user_config/general/hide_qty');
+        return $this->_scopeConfig->isSetFlag('user_config/general/hide_qty');
     }
 
     public function getDefaultQtyValue()

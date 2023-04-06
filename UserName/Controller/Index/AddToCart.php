@@ -121,7 +121,6 @@ class AddToCart implements ActionInterface
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->messageManager->addException($e, ('Something went wrong while adding the product to cart.'));
-            return $this->resultRedirectFactory->create()->setPath('*/*/');
         }
     }
 }
