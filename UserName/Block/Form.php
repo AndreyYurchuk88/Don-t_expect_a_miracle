@@ -29,12 +29,12 @@ class Form extends Template
         $this->eventManager->dispatch('amasty_username_add_product_to_cart', ['product' => $product]);
     }
 
-    public function getCssClasses()
+    public function getCssClasses(): string
     {
         return $this->getData('css_classes') ? (string) $this->getData('css_classes') : '';
     }
 
-    public function isQtyHidden()
+    public function isQtyHidden(): bool
     {
         return (bool) $this->_scopeConfig->getValue('user_config/general/hide_qty');
     }
