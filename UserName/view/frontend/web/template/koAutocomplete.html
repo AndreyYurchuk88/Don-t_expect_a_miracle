@@ -3,8 +3,9 @@
     <input type="text" data-bind="textInput: searchText" name="sku" id="sku"/>
     <div>
         <ul data-bind="foreach: searchResult">
-            <li data-bind="text: sku">
-                <div data-bind="text: name"></div>
+            <li>
+                <div data-bind="text: sku"></div>
+                <div class="name" data-bind="text: name"></div>
             </li>
         </ul>
     </div>

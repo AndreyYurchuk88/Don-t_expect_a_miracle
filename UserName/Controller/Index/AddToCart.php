@@ -93,10 +93,10 @@ class AddToCart implements ActionInterface
             }
 
             // Получаем данные о количестве товара
-            $stockItem = $product->getStockItem();
+            $productStockData = $product->getQuantityAndStockStatus();
 
             // Проверка на наличие товара в достаточном количестве
-            if ($stockItem->getQty() < $qty) {
+            if (!$productStockData['is_in_stock'] || $productStockData['qty'] < $qty) {
                 throw new LocalizedException(('Not enough quantity available.'));
             }
 

@@ -4,7 +4,7 @@
  */
 ?>
 
-<form class="<?= $block->getCssClasses() ?>" action="username/index/addtocart" method="post">
+<form class="<?= $block->getCssClasses() ?>" method="post" action="username/index/addtocart"> <!--action="<?= $block->getFormAction() ?>"-->
     <div data-bind="scope: 'skuAutocomplete'">
         <!-- ko template: getTemplate() --><!-- /ko -->
     </div>

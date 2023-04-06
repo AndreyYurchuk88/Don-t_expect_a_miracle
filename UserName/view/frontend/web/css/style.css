@@ -1,3 +1,11 @@
 body {
     border: 10px solid red;
 }
+
+li div {
+    display: inline-block;
+}
+
+li div.name {
+    margin-left: 800px;
+}
