@@ -10,7 +10,8 @@ use Magento\Framework\Message\ManagerInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\RequestInterface;
-use \Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\Product\Type;
+use Amasty\UserName\Model\BlacklistFactory;
 
 class AddToCart implements ActionInterface
 {
@@ -44,6 +45,11 @@ class AddToCart implements ActionInterface
      */
     protected $checkoutSession;
 
+    /**
+     * @var BlacklistFactory
+     */
+    protected $blacklistFactory;
+
 
     public function __construct(
         Context $context,
@@ -52,6 +58,7 @@ class AddToCart implements ActionInterface
         ProductRepositoryInterface $productRepository,
         ManagerInterface $messageManager,
         CheckoutSession $checkoutSession,
+        BlacklistFactory $blacklistFactory
     )
     {
         $this->context = $context;
@@ -60,6 +67,7 @@ class AddToCart implements ActionInterface
         $this->productRepository = $productRepository;
         $this->messageManager = $messageManager;
         $this->checkoutSession = $checkoutSession;
+        $this->blacklistFactory = $blacklistFactory;
     }
 
     public function execute()
@@ -90,6 +98,27 @@ class AddToCart implements ActionInterface
             // Проверка qty на положительное число
             if ($qty < 1) {
                 throw new LocalizedException(('Qty must be a positive number.'));
+            }
+
+            // Проверяем, находится ли sku в Blacklist
+            $blacklist = $this->blacklistFactory->create()->loadBySku($sku);
+            // Если товар в Blacklist - сравниваем количество товара c qty
+            if ($blacklist->getId()) {
+                $qtyLimit = (int)$blacklist->getData('qty');
+                $totalQty = $this->blacklistFactory->getTotalQty($sku);
+                // Добавляем возможное количество
+                if ($totalQty > $qtyLimit) {
+                    $this->blacklistFactory->addProductToCartWithQtyLimit($product, $qtyLimit);
+                    $addedMessage = __('The product was added to your cart, but the quantity was limited to %1.', $qtyLimit);
+                } else {
+                    $this->checkoutSession->getQuote()->addProduct($product, $qty);
+                    $this->checkoutSession->getQuote()->save();
+                    $addedMessage = __('The product was successfully added to your cart.');
+                }
+                $this->messageManager->addSuccessMessage($addedMessage);
+                $totalAddedQty = $this->checkoutSession->getQuote()->getItemsQty();
+                $this->messageManager->addSuccessMessage(__('Total added quantity: %1.', $totalAddedQty));
+                return $this->resultRedirectFactory->create()->setPath('*/*/');
             }
 
             // Получаем данные о количестве товара

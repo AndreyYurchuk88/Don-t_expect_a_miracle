@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="amasty_username_blacklist" resource="default" engine="innodb" comment="Black List Table">
+        <column xsi:type="int" name="blacklist_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Black List ID" />
+        <column xsi:type="varchar" name="sku" nullable="false" length="255" default="" comment="SKU product" />
+        <column xsi:type="int" name="qty" nullable="false" unsigned="true" comment="QTY product" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="blacklist_id" />
+        </constraint>
+    </table>
+</schema>
