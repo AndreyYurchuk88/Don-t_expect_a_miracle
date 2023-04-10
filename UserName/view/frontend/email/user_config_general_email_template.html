@@ -1,0 +1,10 @@
+<!--@subject Amasty User Name Module Blacklist @-->
+<!--@vars
+{
+"var qty":"QTY"
+}
+@-->
+
+{{template config_path="design/email/header_template"}}
+<p>{{trans "Buyer, the product Crown Summit Backpack bag (sku 24-MB03) remained in the amount of %qty pieces" qty=$block->getQty()}}</p>
+{{template config_path="design/email/footer_template"}}
