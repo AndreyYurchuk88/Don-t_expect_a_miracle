@@ -30,6 +30,14 @@
                 <field id="default_qty" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default Qty Value</label>
                 </field>
+                <field id="email" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email</label>
+                    <validate>required-email</validate>
+                </field>
+                <field id="email_template" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
             </group>
         </section>
     </system>
