@@ -15,7 +15,7 @@
                 <field id="promo_sku" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Promo SKU</label>
                     <comment>Enter only 1 SKU</comment>
-                    <validate>validate-length maximum-length-1</validate>
+                    <validate>max-words:1</validate>
                 </field>
             </group>
             <group id="for_sku" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"

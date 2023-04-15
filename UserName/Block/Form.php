@@ -24,11 +24,6 @@ class Form extends Template
         $this->eventManager = $eventManager;
     }
 
-    public function addProductToCart($product)  //добавляем товар в корзину
-    {
-        $this->eventManager->dispatch('amasty_username_add_product_to_cart', ['product' => $product]);
-    }
-
     public function getCssClasses(): string
     {
         return $this->getData('css_classes') ? (string) $this->getData('css_classes') : '';

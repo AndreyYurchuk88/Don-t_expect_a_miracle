@@ -115,13 +115,16 @@ class AddToCart implements ActionInterface
             ];
             $quote->addProduct($product, $params);
             $quote->save();
+            $this->eventManager->dispatch('
+            amasty_username_add_product_to_cart',
+                ['product' => $product]);
 
             $this->messageManager->addSuccess(('Product was successfully added to your shopping cart.'));
         } catch (LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->messageManager->addException($e, ('Something went wrong while adding the product to cart.'));
-            return $this->resultRedirectFactory->create()->setPath('*/*/');
         }
+        return $this->resultRedirectFactory->create()->setPath('*/*/');
     }
 }
