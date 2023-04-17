@@ -29,11 +29,17 @@
                 <field id="default_qty" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default Qty Value</label>
                 </field>
-                <field id="email" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Email</label>
-                    <validate>required-email</validate>
+            </group>
+            <group id="cron" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cron</label>
+                <field id="schedule" type="text" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Schedule</label>
                 </field>
-                <field id="email_template" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="email" type="text" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Email</label>
+                    <validate>validate-email</validate>
+                </field>
+                <field id="email_template" type="select" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Email Template</label>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
                 </field>

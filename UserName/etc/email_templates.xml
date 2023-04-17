@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
-    <template id="user_config_general_email_template"
+    <template id="user_config_cron_email_template"
               label="Blacklist Email Template"
-              file="user_config_general_email_template.html"
+              file="blacklist_notification.html"
               type="html"
               module="Amasty_UserName"
               area="frontend"/>

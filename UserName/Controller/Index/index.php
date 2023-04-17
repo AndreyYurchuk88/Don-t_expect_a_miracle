@@ -59,36 +59,4 @@ class Index implements ActionInterface
             die('Sorry, the page cannot be loaded...');
         }
     }
-
-    public function sendEmail()
-    {
-        $sku = '24-MB03';
-        $qty = $this->resourceBlacklist->getQtyBySku($sku);
-
-        $templateId = 'amasty_username_blacklist_email_template';
-        $templateVars = [
-            'qty' => $qty,
-        ];
-        $templateOptions = [
-            'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
-            'store' => 0,
-        ];
-        $sender = [
-            'name' => 'Sender Name',
-            'email' => 'sender@example.com'
-        ];
-        $recipient = [
-            'name' => 'Recipient Name',
-            'email' => 'recipient@example.com'
-        ];
-
-        $transport = $this->transportBuilder->setTemplateIdentifier($templateId)
-            ->setTemplateOptions($templateOptions)
-            ->setTemplateVars($templateVars)
-            ->setFrom($sender)
-            ->addTo($recipient)
-            ->getTransport();
-
-        $transport->sendMessage();
-    }
 }

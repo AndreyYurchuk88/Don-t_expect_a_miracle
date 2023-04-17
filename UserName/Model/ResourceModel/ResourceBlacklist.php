@@ -9,8 +9,8 @@ class ResourceBlacklist extends AbstractDb
     public function _construct()
     {
         $this->_init(
-             'amasty_username_blacklist',
-             'blacklist_id'
+            'amasty_username_blacklist',
+            'blacklist_id'
         );
     }
 }
