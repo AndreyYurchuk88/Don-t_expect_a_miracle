@@ -1,13 +1,13 @@
 <?php
 
-namespace Amasty\UserName\Plugin;
+namespace Amasty\SecondUsername\Plugin;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Controller\Cart\Add;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 
-class AddPromoProductPlugin
+class ddPromoProductPlugin
 {
     /**
      * @var ProductRepositoryInterface

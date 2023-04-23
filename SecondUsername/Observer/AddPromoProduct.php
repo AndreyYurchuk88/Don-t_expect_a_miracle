@@ -45,6 +45,7 @@ class AddPromoProduct implements ObserverInterface
         $forSku = $this->scopeConfig->getValue(self::FOR_SKU);
         $currentSku = $observer->getSku();
 
+        //str_contains() - содержит ли строка, переданная в первом аргументе, подстроку, переданную во втором аргументе
         if (str_contains($forSku, $currentSku)) {
             $product = $this->productRepository->get($promoSku);
             $quote = $this->checkoutSession->getQuote();
