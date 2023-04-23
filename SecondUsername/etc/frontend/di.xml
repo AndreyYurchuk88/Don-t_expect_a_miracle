@@ -1,7 +1,13 @@
 <?xml version="1.0"?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Amasty\UserName\Block\Form">
-        <plugin name="Amasty_SecondUsername::ChangeFormAction" type="Amasty\SecondUsername\Plugin\ChangeFormAction"/>
+    <!-- убрать коммент. - запрос на checkout/cart/add/sku -->
+    <!--<type name="Amasty\UserName\Block\Form">
+        <plugin name="Amasty_SecondUsername::ChangeFormAction"
+                type="Amasty\SecondUsername\Plugin\ChangeFormAction"/>
+    </type> -->
+    <type name="Magento\Checkout\Controller\Cart\Add">
+        <plugin name="Amasty_SecondUsername::AddPromoProductPlugin"
+                type="Amasty\SecondUsername\Plugin\AddPromoProductPlugin" />
     </type>
 </config>

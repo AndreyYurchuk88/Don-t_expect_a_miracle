@@ -2,39 +2,42 @@
 
 namespace Amasty\SecondUsername\Plugin;
 
-use Magento\Framework\App\RequestInterface;
-use Magento\Checkout\Model\Cart;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Checkout\Controller\Cart\Add;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Message\ManagerInterface;
 
-class AddPromoProductPlugin
+class ddPromoProductPlugin
 {
     /**
-     * @var RequestInterface
+     * @var ProductRepositoryInterface
      */
-
-    protected $request;
+    protected $productRepository;
 
     /**
-     * @var Cart
+     * @var ManagerInterface
      */
-
-    protected $cart;
+    protected $messageManager;
 
     public function __construct(
-        RequestInterface $request,
-        Cart $cart
-    ) {
-        $this->request = $request;
-        $this->cart = $cart;
+        ProductRepositoryInterface $productRepository,
+        ManagerInterface $messageManager
+    )
+    {
+        $this->productRepository = $productRepository;
+        $this->messageManager = $messageManager;
     }
 
-    public function aroundExecute(
-        \Amasty\SecondUsername\Observer\AddPromoProduct $subject, //объект класса Amasty\SecondUsername\Observer\AddPromoProduct
-        callable $proceed, //вызываем метод execute
-        \Magento\Framework\Event\Observer $observer // объект-событие event
-    ) {
-        if (!$this->request->isAjax()) {
-            return $proceed($observer);
+    public function beforeExecute(Add $subject)   //объект класса Magento\Checkout\Controller\Cart\Add
+    {   //если параметр product не определен, используем sku
+        if (!$subject->getRequest()->getParam('product')) {
+            try {
+                $sku = (string)$subject->getRequest()->getParam('sku');
+                $product = $this->productRepository->get($sku);
+                $subject->getRequest()->setParams(['product' => $product->getId()]);
+            } catch (NoSuchEntityException $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
+            }
         }
-        return;
     }
 }

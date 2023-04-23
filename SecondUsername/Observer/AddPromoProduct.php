@@ -2,46 +2,60 @@
 
 namespace Amasty\SecondUsername\Observer;
 
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Checkout\Model\Session;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Event\Observer as EventObserver;
-use Magento\Checkout\Model\Cart;
-use Magento\Framework\App\RequestInterface;
 
 class AddPromoProduct implements ObserverInterface
 {
-    /**
-     * @var Cart
-     */
-
-    protected $cart;
+    public const FOR_SKU = 'amasty_secondusername/general/for_sku';
+    public const PROMO_SKU = 'amasty_secondusername/general/promo_sku';
 
     /**
-     * @var RequestInterface
+     * @var Session
      */
+    private $checkoutSession;
 
-    protected $request;
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
 
     public function __construct(
-        Cart $cart,
-        RequestInterface $request
-    ) {
-        $this->cart = $cart;
-        $this->request = $request;
+        ProductRepositoryInterface $productRepository,
+        Session                    $checkoutSession,
+        ScopeConfigInterface       $scopeConfig
+    )
+    {
+        $this->checkoutSession = $checkoutSession;
+        $this->productRepository = $productRepository;
+        $this->scopeConfig = $scopeConfig;
     }
 
-    public function execute(EventObserver $observer)
+    public function execute(Observer $observer)
     {
-        $product = $observer->getEvent()->getData('product');
-        $forSku = '';
-        $promoSku = '';
+        $promoSku = $this->scopeConfig->getValue(self::PROMO_SKU);
+        $forSku = $this->scopeConfig->getValue(self::FOR_SKU);
+        $currentSku = $observer->getSku();
 
-        if (strpos($forSku, $product->getSku()) !== false) {
-            $params = array(
-                'product' => $promoSku,
-                'qty' => 1
-            );
-            $this->cart->addProduct($promoSku, $params);
-            $this->cart->save();
+        //str_contains() - содержит ли строка, переданная в первом аргументе, подстроку, переданную во втором аргументе
+        if (str_contains($forSku, $currentSku)) {
+            $product = $this->productRepository->get($promoSku);
+            $quote = $this->checkoutSession->getQuote();
+
+            if (!$quote->getId()) {
+                $quote->save();
+            }
+
+            $quote->addProduct($product, 1);
+            $quote->save();
         }
     }
 }

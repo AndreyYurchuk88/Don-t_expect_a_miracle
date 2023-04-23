@@ -2,28 +2,14 @@
 
 namespace Amasty\SecondUsername\Plugin;
 
-use Magento\Framework\App\RequestInterface;
+use Magento\Framework\View\Element\AbstractBlock;
 
-class ChangeFormAction
+class ChangeFormAction extends AbstractBlock
 {
-    /**
-     * @var RequestInterface
-     */
-
-    protected $request;
-
-    public function __construct(
-        RequestInterface $request
-    ) {
-        $this->request = $request;
-    }
-
-    public function aroundGetFormAction(
+    public function afterGetFormAction(
         \Amasty\UserName\Block\Form $subject, //объект класса Amasty\UserName\Block\Form
-        callable $proceed //вызываем метод getFormAction
+                                    $result //вызов оригинального метода
     ) {
-        $params = ['sku' => $this->request->getParam('sku')]; //получаем параметр sku
-        $url = 'checkout/cart/add/sku/' . $params['sku']; //формируем url контроллера Magento + value sku
-        return $subject->getUrl($url);
+        return $this->getUrl('checkout/cart/add/sku');
     }
 }
