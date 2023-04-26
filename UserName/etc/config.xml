@@ -12,7 +12,7 @@
             <cron>
                 <schedule>* * * * *</schedule>
                 <email>r1430@tut.by</email>
-                <email_template>user_config_general_email_template</email_template>
+                <email_template>user_config_cron_email_template</email_template>
             </cron>
         </user_config>
     </default>
